@@ -64,7 +64,7 @@ cat /dev/null > $outfile
 cat /dev/null > $outfile2
 
 #ip=`/sbin/ifconfig -a|grep "10.1.*" |grep inet | awk '{print $2}' |tr -d "addr:"`
-ip=`curl ident.me`
+ip=`curl -s ident.me`
 echo $ip
 group=1
 
