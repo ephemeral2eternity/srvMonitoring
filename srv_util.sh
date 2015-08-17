@@ -63,8 +63,9 @@ echo $aver_tx
 cat /dev/null > $outfile
 cat /dev/null > $outfile2
 
-ip=`/sbin/ifconfig -a|grep "10.1.*" |grep inet | awk '{print $2}' |tr -d "addr:"`
-#echo $ip
+#ip=`/sbin/ifconfig -a|grep "10.1.*" |grep inet | awk '{print $2}' |tr -d "addr:"`
+ip=`curl ident.me`
+echo $ip
 group=1
 
 echo \"ip\",\"group\",\"type\",\"cpu\",\"mem\",\"disk\",\"net_in\",\"net_out\" >>$outfile2
