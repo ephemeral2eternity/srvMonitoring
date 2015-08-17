@@ -5,7 +5,7 @@ outfile=$HOME/monitor/$HOSTNAME.csv
 outfile2=$HOME/monitor/$HOSTNAME.simple.csv
 oldfile=$HOME/monitor/$HOSTNAME.old
 
-eth=$(ifconfig | grep -B1 $localip | grep -v $localip | awk -F: '{print $1}')
+eth=$(ifconfig | grep -B1 $localip | grep -v $localip | awk '{print $1}')
 echo $eth
 
 sec=5
