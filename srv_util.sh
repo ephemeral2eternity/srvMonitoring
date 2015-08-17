@@ -86,9 +86,7 @@ diff $outfile2 $oldfile > /dev/null
 comp_value=$?
 echo $comp_value
 
-\cp $outfile2 $oldfile
+cp $outfile2 $oldfile
 
-in_first=$(cat /proc/net/dev | grep $eth -m 1 | awk '{print $2}')
-out_first=$(cat /proc/net/dev | grep $eth -m 1 | awk '{print $10}')
-
+cat $outfile2
 
