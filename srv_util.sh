@@ -4,8 +4,8 @@
 
 today=$(date +"%m%d%H%M")
 
-outfile=$HOME/monitor/$HOSTNAME_$today.csv
-oldfile=$HOME/monitor/$HOSTNAME.old
+outfile=$HOME/monitor/$HOSTNAME$today.csv
+#oldfile=$HOME/monitor/$HOSTNAME.old
 
 localip=`/sbin/ifconfig -a|grep "10.*" |grep inet | awk '{print $2}' |tr -d "addr:"`
 eth=$(ifconfig | grep -B1 $localip | grep -v $localip | awk '{print $1}')
@@ -34,7 +34,7 @@ cur_ts=$(date "+%s")
 end_ts=$((cur_ts+duration))
 
 #initialization
-cp $outfile $oldfile
+#cp $outfile $oldfile
 cat /dev/null > $outfile
 echo "time_stamp, ip, cpu(%), mem(%), net_in(bytes/s), net_out(bytes/s)" >>$outfile
 
@@ -98,7 +98,7 @@ do
 
 	#ip=`/sbin/ifconfig -a|grep "10.1.*" |grep inet | awk '{print $2}' |tr -d "addr:"`
 	#group=1
-	
+
 	echo $cur_ts, $ip, $cpu, $mem, $aver_rx, $aver_tx
 	echo $cur_ts, $ip, $cpu, $mem, $aver_rx, $aver_tx >> $outfile
 
