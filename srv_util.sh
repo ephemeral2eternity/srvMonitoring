@@ -106,8 +106,8 @@ do
 	#echo \"net_out\",\"$aver_tx\" >> $outfile
 
 	#--------------------remember the last sample----------------------------------#
-	in_first=$(in_end)
-	out_first=$(out_end)
+	in_first=$in_end
+	out_first=$out_end
 	sleep $intvl
 done
 
