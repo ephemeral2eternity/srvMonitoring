@@ -4,7 +4,7 @@
 
 today=$(date +"%m%d%H%M")
 
-outfile=$HOME/monitor/$HOSTNAME$today.csv
+outfile="$HOME/monitor/$HOSTNAME-$today.csv"
 #oldfile=$HOME/monitor/$HOSTNAME.old
 
 localip=`/sbin/ifconfig -a|grep "10.*" |grep inet | awk '{print $2}' |tr -d "addr:"`
