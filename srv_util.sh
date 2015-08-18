@@ -28,7 +28,7 @@ out_first=$(cat /proc/net/dev | grep $eth -m 1 | awk '{print $10}')
 
 # Count when the monitoring will be stopped.
 cur_ts=$(date "+%s")
-end_ts=$((curhour+duration))
+end_ts=$((cur_ts+duration))
 
 #initialization
 cp $outfile $oldfile
