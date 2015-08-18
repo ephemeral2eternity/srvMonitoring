@@ -1,7 +1,10 @@
 #!/bin/bash
 
 # outfile=$HOME/monitor/$HOSTNAME.csv
-outfile=$HOME/monitor/$HOSTNAME.csv
+
+today=$(date +"%m%d%H%M")
+
+outfile=$HOME/monitor/$HOSTNAME_$today.csv
 oldfile=$HOME/monitor/$HOSTNAME.old
 
 localip=`/sbin/ifconfig -a|grep "10.*" |grep inet | awk '{print $2}' |tr -d "addr:"`
@@ -33,20 +36,20 @@ end_ts=$((cur_ts+duration))
 #initialization
 cp $outfile $oldfile
 cat /dev/null > $outfile
-echo "ip, type, cpu, mem, net_in, net_out, time_stamp" >>$outfile
+echo "time_stamp, ip, cpu(%), mem(%), net_in(bytes/s), net_out(bytes/s)" >>$outfile
 
 #------------hostname-----------
 #name= `hostname`
 #echo $HOSTNAME | grep "client"
-if echo $HOSTNAME | grep -q "cache"
-then
-	type="cache_agent"
+#if echo $HOSTNAME | grep -q "cache"
+#then
+#	type="cache_agent"
 #fi
-else 
-	type="client"
-fi
+#else 
+#	type="client"
+#fi
 
-echo $type
+#echo $type
 
 ip=`curl -s ident.me`
 echo $ip
@@ -57,17 +60,17 @@ while [ $(date "+%s") -lt $end_ts ];
 do
 	#-------------cpu----------------
 	idlecpu=`top -b -n 1  | grep -E 'Cpu' | awk -F ',' '{print $4}' | awk '{print $1}' | awk -F '%' '{print $1}'`
-	echo $idlecpu
+	#echo $idlecpu
 	cpu=`echo "scale=2;a=100-$idlecpu; if(a<1) print 0; print a" | bc`
-	echo $cpu 
+	#echo $cpu 
 
 	#-------------mem----------------
 	totalmem=`top -b -n 1 | grep -E 'Mem:' | cut -d "," -f 1 | cut -d ":" -f 2 | awk '{print $1}'` 
-	echo $totalmem
+	#echo $totalmem
 	usedmem=`top -b -n 1 | grep -E 'Mem:' | cut -d "," -f 2 | awk '{print $1}'` 
-	echo $usedmem
+	#echo $usedmem
 	mem=`echo "scale=2;a=$usedmem/$totalmem*100; if(a<1) print 0; print a" | bc`
-	echo $mem
+	#echo $mem
 
 	#------------disk----------------
 	#totaldisk=`df | grep /dev | awk '{print $2}' | awk 'BEGIN{sum=0} {sum+=$1}END{print sum}'`
@@ -79,24 +82,25 @@ do
 	in_end=$(cat /proc/net/dev | grep $eth -m 1 | awk '{print $2}')
 	out_end=$(cat /proc/net/dev | grep $eth -m 1 | awk '{print $10}')
 	cur_ts=$(date "+%s")
-	echo $cur_ts
+	#echo $cur_ts
 
 	sum_rx=`echo "scale=2;$in_end-$in_first" | bc`
 	sum_tx=`echo "scale=2;$out_end-$out_first" | bc`
-	echo $sum_rx
-	echo $sum_tx
+	#echo $sum_rx
+	#echo $sum_tx
 	aver_rx=`echo "scale=2;a=$sum_rx/$intvl; if(a<1) print 0; print a" | bc`
 	aver_tx=`echo "scale=2;a=$sum_tx/$intvl; if(a<1) print 0; print a" | bc`
-	echo $aver_rx
-	echo $aver_tx
+	#echo $aver_rx
+	#echo $aver_tx
 
 	#cat /dev/null > $outfile
 	#cat /dev/null > $outfile2
 
 	#ip=`/sbin/ifconfig -a|grep "10.1.*" |grep inet | awk '{print $2}' |tr -d "addr:"`
 	#group=1
-
-	echo $ip, $type, $cpu, $mem, $aver_rx, $aver_tx, $cur_ts >> $outfile
+	
+	echo $cur_ts, $ip, $cpu, $mem, $aver_rx, $aver_tx
+	echo $cur_ts, $ip, $cpu, $mem, $aver_rx, $aver_tx >> $outfile
 
 	#echo \"name\",\"value\" >> $outfile
 	#echo \"ip\",\"$ip\" >> $outfile
