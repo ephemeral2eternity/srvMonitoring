@@ -79,11 +79,14 @@ do
 	in_end=$(cat /proc/net/dev | grep $eth -m 1 | awk '{print $2}')
 	out_end=$(cat /proc/net/dev | grep $eth -m 1 | awk '{print $10}')
 	cur_ts=$(date "+%s")
+	echo $cur_ts
 
 	sum_rx=`echo "scale=2;$in_end-$in_first" | bc`
 	sum_tx=`echo "scale=2;$out_end-$out_first" | bc`
-	aver_rx=`echo "scale=2;a=$sum_rx/$sec; if(a<1) print 0; print a" | bc`
-	aver_tx=`echo "scale=2;a=$sum_tx/$sec; if(a<1) print 0; print a" | bc`
+	echo $sum_rx
+	echo $sum_tx
+	aver_rx=`echo "scale=2;a=$sum_rx/$intvl; if(a<1) print 0; print a" | bc`
+	aver_tx=`echo "scale=2;a=$sum_tx/$intvl; if(a<1) print 0; print a" | bc`
 	echo $aver_rx
 	echo $aver_tx
 
