@@ -33,7 +33,7 @@ end_ts=$((cur_ts+duration))
 #initialization
 cp $outfile $oldfile
 cat /dev/null > $outfile
-echo \"ip\", \"type\",\"cpu\",\"mem\",\"net_in\",\"net_out\", \"time_stamp\" >>$outfile
+echo "ip, type, cpu, mem, net_in, net_out, time_stamp" >>$outfile
 
 #------------hostname-----------
 #name= `hostname`
@@ -62,9 +62,9 @@ do
 	echo $cpu 
 
 	#-------------mem----------------
-	totalmem=`top -b -n 1 | grep -E 'Mem' | cut -d "," -f 1 | cut -d ":" -f 2 | awk '{print $1}' | awk -F 'k' '{print $1}'` 
+	totalmem=`top -b -n 1 | grep -E 'Mem:' | cut -d "," -f 1 | cut -d ":" -f 2 | awk '{print $1}'` 
 	echo $totalmem
-	usedmem=`top -b -n 1 | grep -E 'Mem' | cut -d "," -f 2 | awk '{print $1}' | awk -F 'k' '{print $1}' ` 
+	usedmem=`top -b -n 1 | grep -E 'Mem:' | cut -d "," -f 2 | awk '{print $1}'` 
 	echo $usedmem
 	mem=`echo "scale=2;a=$usedmem/$totalmem*100; if(a<1) print 0; print a" | bc`
 	echo $mem
@@ -96,7 +96,7 @@ do
 	#ip=`/sbin/ifconfig -a|grep "10.1.*" |grep inet | awk '{print $2}' |tr -d "addr:"`
 	#group=1
 
-	echo \"$ip\", \"$type\",\"$cpu\",\"$mem\",\"$aver_rx\",\"$aver_tx\", \"$cur_ts\" >> $outfile
+	echo $ip, $type, $cpu, $mem, $aver_rx, $aver_tx, $cur_ts >> $outfile
 
 	#echo \"name\",\"value\" >> $outfile
 	#echo \"ip\",\"$ip\" >> $outfile
