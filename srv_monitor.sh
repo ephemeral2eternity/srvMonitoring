@@ -49,13 +49,7 @@ while [ $(date "+%s") -lt $end_ts ];
 
 	wait
 	echo $idlecpu
-	ave_idle_cpu = `echo $idlecpu | awk 'BEGIN {FS=' '}
-		{
-			sum=0; n=0
-			for(i=1;i<=NF;i++)
-				{sum+=$i; ++n}
-				print sum/n
-		}'`
+	ave_idle_cpu = `echo $idlecpu | awk '{sum=0; for(i=1;i<=NF;i++){sum+=$i}; print sum/NF }'`
 	echo $ave_idle_cpu
 
 	cpu=`echo "scale=2;a=100-$ave_idle_cpu; if(a<1) print 0; print a" | bc`
