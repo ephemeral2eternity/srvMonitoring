@@ -48,17 +48,16 @@ while [ $(date "+%s") -lt $end_ts ];
 	idlecpu=`vmstat 1 $intvl |grep -v "procs" |grep -v "free" |awk '{print $15}'` &
 
 	wait
+	echo $idlecpu
+	ave_idle_cpu = `echo $idlecpu | awk 'BEGIN {FS=' '}
+		{
+			sum=0; n=0
+			for(i=1;i<=NF;i++)
+				{sum+=$i; ++n}
+				print sum/n
+		}'`
+	echo $ave_idle_cpu
 
-	ave_idle_cpu = `echo $idlecpu | awk '
-	BEGIN {FS=' '}
-	{
-		sum=0; n=0
-		for(i=1;i<=NF;i++)
-			{sum+=$i; ++n}
-			print sum/n
-	}'`
-
-	cpu=`echo "scale=2;a=100-$idlecpu; if(a<1) print 0; print a" | bc`
+	cpu=`echo "scale=2;a=100-$ave_idle_cpu; if(a<1) print 0; print a" | bc`
 	echo "CPU Utilization: $cpu" 
-
 done
