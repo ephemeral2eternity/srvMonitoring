@@ -59,8 +59,8 @@ sleep $intvl
 while [ $(date "+%s") -lt $end_ts ];
 do
 	#-------------cpu----------------
-	# idlecpu=`top -b -n 1  | grep -E 'Cpu' | awk -F ',' '{print $4}' | awk '{print $1}' | awk -F '%' '{print $1}'`
-	idlecpu=`vmstat |sed -n '3p' |awk '{print $15}'`
+	idlecpu=`top -b -n 1  | grep -E '%Cpu' | awk -F ',' '{print $4}' | awk '{print $1}' | awk -F '%' '{print $1}'`
+	# idlecpu=`vmstat |sed -n '3p' |awk '{print $15}'`
 	#echo $idlecpu
 	cpu=`echo "scale=2;a=100-$idlecpu; if(a<1) print 0; print a" | bc`
 	echo "CPU Utilization: $cpu" 
