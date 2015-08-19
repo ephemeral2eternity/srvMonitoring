@@ -1,1 +1,2 @@
-tmp/*
+tmp/cpu
+tmp/io_tps

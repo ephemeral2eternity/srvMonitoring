@@ -44,7 +44,7 @@ ip=`curl -s ident.me`
 while [ $(date "+%s") -lt $end_ts ];
 do
 	`./cpu_monitor.sh >$PWD/tmp/cpu` &
-	`./io_monitor.sh >$PWD/io_tps` &
+	`./io_monitor.sh >$PWD/tmp/io_tps` &
 	sleep $intvl &
 	wait
 
@@ -56,11 +56,11 @@ do
 	mem=`echo "scale=2;a=$usedmem/$totalmem*100; if(a<1) print 0; print a" | bc`
 
 	#-------------cpu----------------
-	cpu=$(cat ./tmp/cpu)
+	cpu=$(cat $PWD/tmp/cpu)
 
 	#------------i/o----------------
-	io=$(cat ./tmp/io_tps)
-	# echo $cur_ts, $ip, $cpu, $io
+	io=$(cat $PWD/tmp/io_tps)
+	#echo $cur_ts, $ip, $cpu, $io
 
 	#------------net-----------------
 	in_end=$(cat /proc/net/dev | grep $eth -m 1 | awk '{print $2}')
