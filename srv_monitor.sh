@@ -40,6 +40,13 @@ echo "time_stamp, ip, cpu(%), mem(%), i/o(tps), net_in(bytes/s), net_out(bytes/s
 ip=`curl -s ident.me`
 echo $ip
 
-#while [ $(date "+%s") -lt $end_ts ];
-#done
-
+while [ $(date "+%s") -lt $end_ts ];
+do
+	`./cpu_monitor.sh >$PWD/tmp/cpu` &
+	`./io_monitor.sh >$PWD/io_tps` &
+	wait
+	cur_ts=$(date "+%s")
+	cpu=$(cat ./tmp/cpu)
+	io=$(cat ./tmp/io_tps)
+	echo $cur_ts, $ip, $cpu, $io
+done
