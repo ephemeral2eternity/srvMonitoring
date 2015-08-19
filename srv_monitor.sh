@@ -60,7 +60,7 @@ do
 
 	#------------i/o----------------
 	io=$(cat ./tmp/io_tps)
-	echo $cur_ts, $ip, $cpu, $io
+	# echo $cur_ts, $ip, $cpu, $io
 
 	#------------net-----------------
 	in_end=$(cat /proc/net/dev | grep $eth -m 1 | awk '{print $2}')
@@ -77,8 +77,8 @@ do
 	#echo "Average inbound traffic: $aver_rx"
 	# echo "Average outbound traffic: $aver_tx"
 
-	echo $cur_ts, $ip, $cpu, $mem, $io_tps, $aver_rx, $aver_tx
-	echo $cur_ts, $ip, $cpu, $mem, $io_tps, $aver_rx, $aver_tx >> $outfile
+	echo $cur_ts, $ip, $cpu, $mem, $io, $aver_rx, $aver_tx
+	echo $cur_ts, $ip, $cpu, $mem, $io, $aver_rx, $aver_tx >> $outfile
 
 	#--------------------remember the last sample----------------------------------#
 	in_first=$in_end
