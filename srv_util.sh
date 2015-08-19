@@ -36,7 +36,7 @@ end_ts=$((cur_ts+duration))
 #initialization
 #cp $outfile $oldfile
 cat /dev/null > $outfile
-echo "time_stamp, ip, cpu(%), mem(%), net_in(bytes/s), net_out(bytes/s)" >>$outfile
+echo "time_stamp, ip, cpu(%), mem(%), i/o(tps), net_in(bytes/s), net_out(bytes/s)" >>$outfile
 
 #------------hostname-----------
 #name= `hostname`
@@ -59,7 +59,8 @@ sleep $intvl
 while [ $(date "+%s") -lt $end_ts ];
 do
 	#-------------cpu----------------
-	idlecpu=`top -b -n 1  | grep -E 'Cpu' | awk -F ',' '{print $4}' | awk '{print $1}' | awk -F '%' '{print $1}'`
+	# idlecpu=`top -b -n 1  | grep -E 'Cpu' | awk -F ',' '{print $4}' | awk '{print $1}' | awk -F '%' '{print $1}'`
+	idlecpu=`vmstat |sed -n '3p' |awk '{print $15}'`
 	#echo $idlecpu
 	cpu=`echo "scale=2;a=100-$idlecpu; if(a<1) print 0; print a" | bc`
 	#echo $cpu 
@@ -72,8 +73,8 @@ do
 	mem=`echo "scale=2;a=$usedmem/$totalmem*100; if(a<1) print 0; print a" | bc`
 	#echo $mem
 
-	#------------disk----------------
-	#totaldisk=`df | grep /dev | awk '{print $2}' | awk 'BEGIN{sum=0} {sum+=$1}END{print sum}'`
+	#------------i/o----------------
+	io_tps=`iostat -d |grep 'sda' |awk '{print $2}'`
 	#useddisk=`df | grep /dev | awk '{print $3}' | awk 'BEGIN{sum=0} {sum+=$1}END{print sum}'`
 	#disk=`echo "scale=2; a=$useddisk/$totaldisk*100; if(a<1) print 0; print a" | bc`
 	#echo $disk
@@ -99,8 +100,8 @@ do
 	#ip=`/sbin/ifconfig -a|grep "10.1.*" |grep inet | awk '{print $2}' |tr -d "addr:"`
 	#group=1
 
-	echo $cur_ts, $ip, $cpu, $mem, $aver_rx, $aver_tx
-	echo $cur_ts, $ip, $cpu, $mem, $aver_rx, $aver_tx >> $outfile
+	echo $cur_ts, $ip, $cpu, $mem, $io_tps, $aver_rx, $aver_tx
+	echo $cur_ts, $ip, $cpu, $mem, $io_tps, $aver_rx, $aver_tx >> $outfile
 
 	#echo \"name\",\"value\" >> $outfile
 	#echo \"ip\",\"$ip\" >> $outfile
