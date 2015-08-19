@@ -14,7 +14,6 @@ echo $eth
 
 # Initialize the interval and the duration of the monitoring
 intvl=5
-
 duration=600
 
 # Read the interval and duration from the arguments
@@ -42,16 +41,5 @@ ip=`curl -s ident.me`
 echo $ip
 
 #while [ $(date "+%s") -lt $end_ts ];
-sleep $intvl &
-
-#-------------cpu----------------
-idlecpu=`vmstat 1 $intvl |grep -v "procs" |grep -v "free" |awk '{print $15}'` &
-
-wait
-echo $idlecpu
-ave_idle_cpu=`echo $idlecpu | awk '{sum=0; for(i=1;i<=NF;i++){sum+=$i}; print sum/NF }'`
-echo $ave_idle_cpu
-
-cpu=`echo "scale=2;a=100-$ave_idle_cpu; if(a<1) print 0; print a" | bc`
-echo "CPU Utilization: $cpu" 
 #done
+
