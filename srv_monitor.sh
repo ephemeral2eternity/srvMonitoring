@@ -61,3 +61,4 @@ while [ $(date "+%s") -lt $end_ts ];
 	cpu=`echo "scale=2;a=100-$idlecpu; if(a<1) print 0; print a" | bc`
 	echo "CPU Utilization: $cpu" 
 
+done
