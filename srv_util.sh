@@ -63,7 +63,7 @@ do
 	# idlecpu=`vmstat |sed -n '3p' |awk '{print $15}'`
 	#echo $idlecpu
 	cpu=`echo "scale=2;a=100-$idlecpu; if(a<1) print 0; print a" | bc`
-	echo "CPU Utilization: $cpu" 
+	#echo "CPU Utilization: $cpu" 
 
 	#-------------mem----------------
 	totalmem=`top -b -n 1 | grep -E 'Mem:' | cut -d "," -f 1 | cut -d ":" -f 2 | awk '{print $1}'` 
@@ -71,7 +71,7 @@ do
 	usedmem=`top -b -n 1 | grep -E 'Mem:' | cut -d "," -f 2 | awk '{print $1}'` 
 	#echo $usedmem
 	mem=`echo "scale=2;a=$usedmem/$totalmem*100; if(a<1) print 0; print a" | bc`
-	echo "Memory Utilization: $mem"
+	#echo "Memory Utilization: $mem"
 
 	#------------i/o----------------
 	io_tps=`iostat -d |grep 'sda' |awk '{print $2}'`
@@ -83,7 +83,7 @@ do
 	in_end=$(cat /proc/net/dev | grep $eth -m 1 | awk '{print $2}')
 	out_end=$(cat /proc/net/dev | grep $eth -m 1 | awk '{print $10}')
 	cur_ts=$(date "+%s")
-	echo "Current Timestamp: $cur_ts. $(date -d @$cur_ts)"
+	#echo "Current Timestamp: $cur_ts. $(date -d @$cur_ts)"
 
 	sum_rx=`echo "scale=2;$in_end-$in_first" | bc`
 	sum_tx=`echo "scale=2;$out_end-$out_first" | bc`
@@ -91,7 +91,7 @@ do
 	#echo $sum_tx
 	aver_rx=`echo "scale=2;a=$sum_rx/$intvl; if(a<1) print 0; print a" | bc`
 	aver_tx=`echo "scale=2;a=$sum_tx/$intvl; if(a<1) print 0; print a" | bc`
-	echo "Average inbound traffic: $aver_rx"
+	#echo "Average inbound traffic: $aver_rx"
 	echo "Average outbound traffic: $aver_tx"
 
 	#cat /dev/null > $outfile
