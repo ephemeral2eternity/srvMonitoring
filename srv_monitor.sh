@@ -7,10 +7,10 @@ today=$(date +"%m%d%H%M")
 outfile="$HOME/monitor/$HOSTNAME-$today.csv"
 #oldfile=$HOME/monitor/$HOSTNAME.old
 
-localip=`/sbin/ifconfig -a|grep "10.*" |grep "inet " | awk '{print $2}' |tr -d "addr:"`
-eth=$(ifconfig | grep -B1 $localip | grep -v $localip | awk '{print $1}')
+#localip=`/sbin/ifconfig -a|grep "10.*" |grep "inet " | awk '{print $2}' |tr -d "addr:"`
+#eth=$(ifconfig | grep -B1 $localip | grep -v $localip | awk '{print $1}')
 #echo $eth
-
+eth="eth0"
 
 # Initialize the interval and the duration of the monitoring
 intvl=5
